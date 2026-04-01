@@ -1,10 +1,21 @@
-# /bin/bash
+#!/bin/bash
 
-echo "Resolucion de ejercicio 1"
+# Ejercicio 1
+echo "--- Top de IP's por cantidad de requests ---"
 
-cut logs.txt -d ' ' -f 1 | # Separamos los campos para aislar las IP's de cada log para obtener
-  # una lista de apariciones de cada IP
-  uniq -c |  # Enumeramos la cantidad de veces que aparece cada IP a partir de las
-  # lineas del resultado anterior
-  sort -r # Ordenamos los resultados a partir de la numeracion inicial
-  # de forma inversa ya que sort por default las ordena de menor a mayor
+cut "$1" -d ' ' -f 1 | sort | uniq -c | sort -nr 
+
+# Ejercicio 2
+echo ""
+echo "--- Requests Fallidas ---"
+
+cut -d ' ' -f 1,6,7,8,9 "$1" | grep -E " 4[[:digit:]]{2}" | tr '"' '\t'
+
+# Ejercicio 3
+echo ""
+echo "--- Recurso mas solicitado ---"
+
+grep "\"GET " "$1" | cut -d ' ' -f 7 | sort | uniq -c | sort -nr | head -n 3
+
+# Version Generalizada
+# read -p "Ingrese el método a buscar: " var && grep "\"$var " "$1" | cut -d ' ' -f 7 | sort | uniq -c | sort -nr | head -n 3

@@ -1,0 +1,37 @@
+Ejercicio Bash: Análisis de logs de un servidor web
+Contexto:
+Tenés un archivo de log de un servidor web (`access.log`) con el siguiente formato (una línea por request):
+
+    192.168.1.10 - - [15/Mar/2026:10:22:01 -0300] "GET /index.html HTTP/1.1" 200 1024
+    192.168.1.15 - - [15/Mar/2026:10:22:03 -0300] "POST /api/login HTTP/1.1" 401 512
+    10.0.0.5 - - [15/Mar/2026:10:22:05 -0300] "GET /assets/style.css HTTP/1.1" 200 2048
+    192.168.1.10 - - [15/Mar/2026:10:22:06 -0300] "GET /dashboard HTTP/1.1" 200 4096
+    10.0.0.5 - - [15/Mar/2026:10:22:08 -0300] "GET /index.html HTTP/1.1" 200 1024
+    192.168.1.15 - - [15/Mar/2026:10:22:10 -0300] "POST /api/login HTTP/1.1" 401 512
+    192.168.1.15 - - [15/Mar/2026:10:22:12 -0300] "POST /api/login HTTP/1.1" 200 768
+    10.0.0.8 - - [15/Mar/2026:10:22:15 -0300] "GET /admin HTTP/1.1" 403 256
+    192.168.1.10 - - [15/Mar/2026:10:22:18 -0300] "DELETE /api/users/42 HTTP/1.1" 204 0
+    10.0.0.5 - - [15/Mar/2026:10:22:20 -0300] "GET /assets/logo.png HTTP/1.1" 304 0
+
+
+Consignas
+Para las consignas 1 a 3, usá **exclusivamente comandos de terminal en un pipeline** (no se permite escribir scripts en Python, Perl, ni ningún otro lenguaje de programación; sí se pueden usar pipelines, redirecciones y las herramientas estándar de Unix como `grep`, `cut`, `sort`, `uniq`, `wc`, `head`, `tail`, `tr`, `diff`, `find`, etc.). La consigna 4 sí requiere un pequeño script en Bash.
+
+1. Top de IPs por cantidad de requests: Obtené un ranking de las direcciones IP ordenadas de mayor a menor según la cantidad de requests que realizaron.
+
+2. Requests fallidos: Filtrá únicamente las líneas cuyo código de respuesta HTTP sea 4xx (400-499) y mostrá la IP, el recurso solicitado y el código de respuesta, separados por tabulaciones.
+
+3. Recursos más solicitados: Obtené los 3 recursos (paths) más solicitados con método `GET`, mostrando cuántas veces fue pedido cada uno. ¿Cómo adaptarías el pipeline si quisieras filtrar por otro método HTTP (por ejemplo, `POST`)?
+
+4. Script de reporte: Escribí un script en Bash llamado `reporte.sh` que reciba como argumento
+la ruta a un archivo de log y genere un resumen por cada IP única encontrada en el archivo. El script debe:
+   - Recibir el archivo como argumento (`./reporte.sh access.log`) y validar que el archivo existe.
+   - Recorrer las IPs únicas del log con un `for` loop.
+   - Para cada IP, imprimir: la IP, la cantidad total de requests, y la cantidad de requests fallidos (código 4xx).
+   - El output debe verse similar a esto:
+
+         === Reporte de access.log ===
+         IP: 10.0.0.5     | Requests: 3  | Fallidos: 0
+         IP: 10.0.0.8     | Requests: 1  | Fallidos: 1
+         IP: 192.168.1.10  | Requests: 3  | Fallidos: 0
+         IP: 192.168.1.15  | Requests: 3  | Fallidos: 2
