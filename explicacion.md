@@ -19,7 +19,7 @@
 * Luego, como los recursos estan encerrados entre comillas, intercambiamos esas comiilas por '\\t' para que los datos queden separados por tabuladores usando `tr`.
 
 
-## Recursos más Solicitado
+## Recursos más Solicitados
 
 `grep "\"GET " "$1" | cut -d ' ' -f 7 | sort | uniq -c | sort -nr | head -n 3`
 

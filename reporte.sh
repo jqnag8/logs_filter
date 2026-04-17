@@ -5,14 +5,14 @@ if [ ! -e $1 ]; then
 fi
 
 
-ip_list=$(cut -d ' ' -f 1 $1 | sort | uniq) 
+ip_list=$(cut -d ' ' -f 1 $1 | sort | uniq) # Se aislan las IP's (lista)
 
 echo "== Reporte de $1 =="
 
 for ip in $ip_list; do
-  ip_requests=$(grep -w "$ip" "$1") 
-  ip_total_requests=$(echo "$ip_requests" | wc -l) 
+  ip_requests=$(grep -w "$ip" "$1") # Se filtran los logs donde aparezca la IP a iterar
+  ip_total_requests=$(echo "$ip_requests" | wc -l) # wc solo admite archivos o salidas por medio de un pipe
   ip_errors=$(echo "$ip_requests" | cut -d ' ' -f 9 | grep -E 4[[:digit:]]{2} | wc -l) 
 
-  echo -e "IP: $ip\t|\tRequests: $ip_total_requests\t|\tFallidos: $ip_errors"
+  echo -e "IP: $ip\t|\tRequests: $ip_total_requests\t|\tFallidos: $ip_errors" 
 done 
